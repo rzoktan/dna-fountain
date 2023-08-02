@@ -178,13 +178,13 @@ class Glass:
         try:
             truth_data = self.truth[chunk_num]
         except:
-            print "Error. chunk:", chunk_num, " does not exist."
+            print ("Error. chunk:", chunk_num, " does not exist.")
             quit(1)
 
         
         if not droplet.data == truth_data:
             #error
-            print "Decoding error in ", chunk_num, ".\nInput is:", truth_data,"\nOutput is:", droplet.data,"\nDNA:", droplet.to_human_readable_DNA(flag_exDNA = False)
+            print ("Decoding error in ", chunk_num, ".\nInput is:", truth_data,"\nOutput is:", droplet.data,"\nDNA:", droplet.to_human_readable_DNA(flag_exDNA = False))
             quit(1)
         else:
             #print chunk_num, " is OK. ", self.chunksDone, " are done"
