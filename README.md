@@ -1,21 +1,51 @@
+**Installations**
+
+Clone this repositories with command:
+
+```
+git clone https://github.com/rzoktan/dna-fountain.git
+```
+
+Then open the directory:
+
+```
+cd dna-fountain
+```
+
+Install python modules from requirements file:
+
+```
+pip install -r requirements.txt
+```
+
+Cythonize the code by running the following command in this folder:
+
+```
+python setup.py build_ext --inplace
+```
+
 **Encoding example**
 
 Create a compressed tar archive:
+
 ```
 tar -b1 -czvf info_to_code.tar.gz ./info_to_code/
 ```
 
 Zero-padding to make the input a multiple of 512bytes
+
 ```
 truncate -s2116608 ./info_to_code.tar.gz
 ```
 
 Or download the original archive:
+
 ```
 wget http://files.teamerlich.org/dna_fountain/dna-fountain-input-files.tar.gz
 ```
 
 Actual encoding of data as DNA (output is a FASTA file):
+
 ```
 python encode.py \
 --file_in info_to_code.tar.gz \
@@ -30,6 +60,7 @@ python encode.py \
 ```
 
 Add annealing sites:
+
 ```
 cat info_to_code.tar.gz.dna | grep -v '>' |\
 awk '{print "GTTCAGAGTTCTACAGTCCGACGATC"$0"TGGAATTCTCGGGTGCCAAGG"}' \
@@ -41,6 +72,7 @@ Output file is ready to order synthetic DNA.
 **Decoding example**
 
 Convert BCL to FASTQ using picard (https://github.com/broadinstitute/picard):
+
 ```
 for i in {1101..1119} {2101..2119}; do
 mkdir ~/Downloads/fountaincode/seq_data3/$i/;
@@ -65,6 +97,7 @@ done
 
 Read stitching using PEAR (Zhang J et al., Bioinformatics, 2014).
 This step takes the 150nt reads and places them together to get back the full oligo.
+
 ```
 for i in {1101..1119} {2101..2119}; do
 pear -f ./$i.1.fastq -r ./$i.2.fastq -o $i.all.fastq;
@@ -72,11 +105,13 @@ done
 ```
 
 Retain only fragments with 152nt (the original oligo size):
+
 ```
 awk '(NR%4==2 && length($0)==152){print $0}' *.all.fastq.assembled.fastq > all.fastq.good
 ```
 
 Sort to prioritize highly abundant reads:
+
 ```
 sort -S4G all.fastq.good | uniq -c > all.fastq.good.sorted
 gsed -r 's/^\s+//' all.fastq.good.sorted |\
@@ -84,6 +119,7 @@ sort -r -n -k1 -S4G > all.fastq.good.sorted.quantity
 ```
 
 Exclude column 1 specifying the number of times a read was seen and exclude reads with N:
+
 ```
 cut -f2 -d' ' all.fastq.good.sorted.quantity |\
 grep -v 'N' > all.fastq.good.sorted.seq
@@ -102,11 +138,15 @@ python ~/Downloads/fountaincode/receiver.py \
 ```
 
 checksum verification:
+
 ```
 md5 decoder.out.bin
 ```
+
 expected output is 8651e90d3a013178b816b63fdbb94b9b
+
 ```
 md5 info_to_code.tar.gz
 ```
+
 expected output is 8651e90d3a013178b816b63fdbb94b9b

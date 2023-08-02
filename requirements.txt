@@ -1,0 +1,7 @@
+colorama==0.4.6
+Cython==3.0.0
+logging==0.4.9.6
+numpy==1.25.2
+reedsolo==1.7.0
+scipy==1.11.1
+tqdm==4.65.0

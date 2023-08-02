@@ -1,3 +1,4 @@
+# cython: language_level=3, boundscheck=False
 """
 Copyright (C) 2016 Yaniv Erlich
 License: GPLv3-or-later. See COPYING file for details.

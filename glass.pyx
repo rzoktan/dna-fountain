@@ -1,3 +1,11 @@
+# cython: language_level=3, boundscheck=False
+#!python
+cimport cython
+"""
+Copyright (C) 2016 Yaniv Erlich
+License: GPLv3-or-later. See COPYING file for details.
+"""
+
 from utils import *
 from droplet import Droplet
 from reedsolo import RSCodec
