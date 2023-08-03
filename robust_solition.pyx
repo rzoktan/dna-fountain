@@ -34,9 +34,9 @@ def gen_tau(S, K, delta):
     """
     pivot = int(floor(K/S))
 
-    val1 =  [S/K * 1/d for d in xrange(1, pivot)] 
+    val1 =  [S/K * 1/d for d in range(1, pivot)] 
     val2 =  [S/K * log(S/delta)] 
-    val3 =  [0 for d in xrange(pivot, K)] 
+    val3 =  [0 for d in range(pivot, K)] 
  
     return val1 + val2 + val3
 
@@ -44,7 +44,7 @@ def gen_rho(K):
     """The Ideal Soliton Distribution, we precompute
     an array for speed
     """
-    return [1.0/K] + [1.0/(d*(d-1)) for d in xrange(2, K+1)]
+    return [1.0/K] + [1.0/(d*(d-1)) for d in range(2, K+1)]
 
 
 def gen_mu(K, S, delta):
@@ -56,7 +56,7 @@ def gen_mu(K, S, delta):
     rho = gen_rho(K)
 
     Z = sum(rho) + sum(tau)
-    mu = [(rho[d] + tau[d])/Z for d in xrange(K)]
+    mu = [(rho[d] + tau[d])/Z for d in range(K)]
     return (mu, Z)
 
 def gen_rsd_cdf(K, S, delta):
@@ -100,8 +100,8 @@ class PRNG(object):
         """ A helper function to calculate S, the expected number of degree=1 nodes
         """
   
-        K = self.K
-        S = self.c * log(self.K/self.delta) * sqrt(self.K) 
+        # K = self.K
+        S = (self.c * log(self.K/self.delta) * sqrt(self.K))
         self.S = S
         return S
 
@@ -149,7 +149,7 @@ class PRNG(object):
         
         d = self._sample_d()
 
-        nums = random.sample(xrange(self.K_int), d)
+        nums = random.sample(range(self.K_int), d)
         return blockseed, d, nums
 
 
